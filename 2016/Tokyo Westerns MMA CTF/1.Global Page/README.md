@@ -5,15 +5,18 @@ The "quest" begin with a link wihtout any hint or sentence: [link to Global Page
 ![Landing page](images/Globalpageindex.png)
 The Landing Page show one deleted and two followable links.
 
-Trying to follow ctf or tokyo, the browser makes a GET request to a php as parameter(page) the followed link(ctf or tokyo) -> `http://globalpage.chal.ctf.westerns.tokyo/?page=ctf` or `http://globalpage.chal.ctf.westerns.tokyo/?page=tokyo`.
+Trying to follow ctf or tokyo: the browser makes a GET request to a php as parameter(page), the followed link(ctf or tokyo) -> `http://globalpage.chal.ctf.westerns.tokyo/?page=ctf` or `http://globalpage.chal.ctf.westerns.tokyo/?page=tokyo`.
 
 
 ![Page](images/page.png)
 
-Mh! Warning: include() => suggest with high probability a **LFI** attack.
-Before continue one consideration: the include function try to open a file in the page parameter directory with the language specified in the Accept-Language Header Request.
+Mh! Warning: include(); suggest with high probability a **LFI** attack.
+Before continue one consideration: the include function try to open a file with the page parameter as directory and the language specified in the Accept-Language Header Request as file.
 
 Every LFI to the page parameter results in a correctly input sanity check(escape . and /).
+(e.g. page=index.php -> indexphp/en.php, page=../../../etc/passwd -> etcpasswd/en.php)
+
+If you add language code in the Accept-Language, the server include the properly file language php, if exist.
 
 What can we do? Attach a LFI in the Accept-Language and build the properly LFI.
 
