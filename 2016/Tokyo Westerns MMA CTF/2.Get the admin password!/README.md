@@ -77,7 +77,7 @@ while True:
 				break 
 ```
 
-My alternative is to use a Binary(Dicotomic)Search to improve the Search.
+My alternative is to use a Binary(Dicotomic)Search to improve the Search O(log(n)) and less than 3'.
 The intuition is to use the $lt(lower than) or $gt(greater than) to restrict the window of the char to guess in the charset; look at `nosqli.py` to see the implementation. 
 
 
