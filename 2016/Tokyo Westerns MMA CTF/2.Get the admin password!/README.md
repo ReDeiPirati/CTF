@@ -1,4 +1,4 @@
-# Get the admin password! writeup
+# Get the admin password! writeup(nosqli)
 
 The challenge is to get the admin password(the flag), as help we have a valid login credential test:test [link to get the admin password.](http://gap.chal.ctf.westerns.tokyo/login.php)
 

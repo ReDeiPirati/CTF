@@ -1,4 +1,4 @@
-# Global Page WriteUp
+# Global Page WriteUp(LFI)
 
 The "quest" begin with a link wihtout any hint or sentence: [link to Global Page.](http://globalpage.chal.ctf.westerns.tokyo/)
 
